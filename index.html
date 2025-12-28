@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Secure Login | Investment Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', Tahoma, sans-serif;
+}
+body{
+    background:radial-gradient(circle at top,#10131a,#05060a);
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    overflow:hidden;
+}
+
+/* LOGIN BOX */
+.login-box{
+    width:360px;
+    background:#0c0f18;
+    border-radius:18px;
+    padding:35px;
+    box-shadow:0 25px 80px rgba(0,0,0,.85);
+    position:relative;
+    z-index:2;
+}
+.login-box h2{
+    text-align:center;
+    margin-bottom:8px;
+    font-weight:600;
+}
+.login-box p{
+    text-align:center;
+    color:#8b90a7;
+    font-size:14px;
+    margin-bottom:25px;
+}
+
+/* INPUTS */
+.input{
+    margin-bottom:18px;
+}
+.input label{
+    font-size:13px;
+    color:#a0a6c0;
+}
+.input .field{
+    position:relative;
+}
+.input svg{
+    position:absolute;
+    top:50%;
+    left:14px;
+    transform:translateY(-50%);
+    width:18px;
+    fill:#6f7ab8;
+}
+.input input{
+    width:100%;
+    margin-top:6px;
+    padding:14px 14px 14px 45px;
+    background:#14182a;
+    border:1px solid #1f2440;
+    border-radius:12px;
+    color:#fff;
+    font-size:15px;
+}
+.input input:focus{
+    outline:none;
+    border-color:#4f7cff;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(135deg,#4f7cff,#3ac8ff);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* ERROR */
+.error{
+    margin-top:15px;
+    background:#2a0f14;
+    border:1px solid #ff4d4d;
+    color:#ffb3b3;
+    padding:12px;
+    border-radius:10px;
+    display:none;
+    font-size:14px;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    margin-top:25px;
+    font-size:12px;
+    color:#6f7490;
+}
+
+/* ===== LOADING OVERLAY ===== */
+.loader-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(6,8,15,.92);
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    z-index:10;
+    opacity:0;
+    pointer-events:none;
+    transition:.4s;
+}
+.loader-overlay.active{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* LOADER ANIMATION */
+.loader-ring{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,.08);
+    border-top:4px solid #4f7cff;
+    animation:spin 1.2s linear infinite;
+}
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+.loader-text{
+    margin-top:18px;
+    font-size:15px;
+    color:#cfd4ff;
+    letter-spacing:.5px;
+}
+
+/* ===== SUCCESS MODAL ===== */
+.success-modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.6);
+    z-index:20;
+    opacity:0;
+    pointer-events:none;
+    transition:.4s;
+}
+.success-modal.active{
+    opacity:1;
+    pointer-events:auto;
+}
+.success-box{
+    background:#0d1222;
+    padding:35px;
+    border-radius:20px;
+    width:340px;
+    text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,.9);
+    animation:pop .4s ease;
+}
+@keyframes pop{
+    from{transform:scale(.8);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+.success-box h3{
+    margin-top:15px;
+    font-weight:600;
+}
+.success-box p{
+    color:#9aa1c7;
+    font-size:14px;
+    margin-top:8px;
+}
+.check{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#4f7cff,#3ac8ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+}
+</style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Investor Login</h2>
+    <p>Secure access to your investment dashboard</p>
+
+    <div class="input">
+        <label>Username</label>
+        <div class="field">
+            <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.33 0-8 2.17-8 5v1h16v-1c0-2.83-3.67-5-8-5Z"/></svg>
+            <input type="text" id="user">
+        </div>
+    </div>
+
+    <div class="input">
+        <label>Password</label>
+        <div class="field">
+            <svg viewBox="0 0 24 24"><path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2Zm-6 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm3-9H10V6a2 2 0 0 1 4 0Z"/></svg>
+            <input type="password" id="pass">
+        </div>
+    </div>
+
+    <button onclick="login()">Sign In</button>
+
+    <div class="error" id="error">
+        Invalid login credentials. Please try again.
+    </div>
+
+    <div class="footer">
+        © 2025 Global Investment Markets
+    </div>
+</div>
+
+<!-- LOADER -->
+<div class="loader-overlay" id="loader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">Securing your investment account…</div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-modal" id="success">
+    <div class="success-box">
+        <div class="check">✓</div>
+        <h3>Login Successful</h3>
+        <p>You have successfully accessed your investment account.</p>
+    </div>
+</div>
+
+<script>
+function login(){
+    const u = document.getElementById("user").value;
+    const p = document.getElementById("pass").value;
+    const error = document.getElementById("error");
+    const loader = document.getElementById("loader");
+    const success = document.getElementById("success");
+
+    error.style.display="none";
+
+    if(u==="investmentacc.com" && p==="BBCCXXG"){
+        loader.classList.add("active");
+
+        setTimeout(()=>{
+            loader.classList.remove("active");
+            success.classList.add("active");
+        },4000);
+
+        setTimeout(()=>{
+            window.location.href="account.html";
+        },3800);
+    }else{
+        error.style.display="block";
+    }
+}
+</script>
+
+</body>
+</html>
